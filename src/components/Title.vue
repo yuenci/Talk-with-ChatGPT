@@ -21,6 +21,7 @@ export default {
     align-items: center;
     height: 50px;
     font-weight: 600;
+    margin: 0 10px;
 }
 
 .more {

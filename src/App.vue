@@ -72,7 +72,6 @@ export default {
 <style scoped>
 .app-container {
   box-sizing: border-box;
-  padding: 0 10px;
   width: 100vw;
 }
 
@@ -86,5 +85,6 @@ export default {
   /* background-color: aqua; */
   height: calc(100vh - 100px);
   overflow-y: scroll;
+  padding: 0 10px;
 }
 </style>
