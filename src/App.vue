@@ -2,7 +2,7 @@
   <div class="app-container">
     <Title />
     <div class="message-con">
-      <Message v-for="(message, index) in mockData" :data="message" :key="index" />
+      <Message v-for="(message, index) in messagesDataList" :data="message" :key="index" />
       <div ref="buttom"></div>
     </div>
     <Chat class="chat" />
@@ -14,6 +14,7 @@ import Title from './components/Title.vue';
 import Chat from './components/Chat.vue';
 import Message from './components/Message.vue';
 import PubSub from 'pubsub-js';
+import { chatWithGPT } from "./tools.js";
 export default {
   name: 'App',
   components: {
@@ -21,50 +22,43 @@ export default {
   },
   data() {
     return {
-      mockData: [
-        {
-          role: 'user',
-          message: ' Hello Hello Hello Hello Hello Hello '
-        },
-        {
-          role: 'assistant',
-          message: `Some modules' assignments in my university need to explain the code in documentation, and I don't like to do these meaningless things, so I wrote this project and use the GPT-3 artificial intellige`
-        }
-      ]
+      messagesDataList: []
     }
   },
   methods: {
     scrollToBottom() {
       this.$nextTick(() => {
-        this.$refs.buttom.scrollIntoView(
-          {
-            behavior: 'smooth',
-          }
-        );
+        this.$refs.buttom.scrollIntoView({ behavior: 'smooth', });
       })
     },
 
     addUserMessage(msg) {
-      this.mockData.push({
+      this.messagesDataList.push({
         role: 'user',
-        message: msg
+        content: msg
+      })
+      this.scrollToBottom();
+      this.chatWithChatGPT();
+    },
+    addAssistantMessage(msg) {
+      this.messagesDataList.push({
+        role: 'assistant',
+        content: msg
       })
       this.scrollToBottom();
     },
-    addAssistantMessage(msg) {
-      this.mockData.push({
-        role: 'assistant',
-        message: msg
+    async chatWithChatGPT() {
+      chatWithGPT(this.messagesDataList).then((res) => {
+        this.addAssistantMessage(res);
       })
-      this.scrollToBottom();
     }
   },
   mounted() {
     PubSub.subscribe('updateMsg', (msg, data) => {
       if (data.role === 'user') {
-        this.addUserMessage(data.message)
+        this.addUserMessage(data.content)
       } else {
-        this.addAssistantMessage(data.message)
+        this.addAssistantMessage(data.content)
       }
     });
   },

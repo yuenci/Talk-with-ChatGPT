@@ -2,7 +2,8 @@
     <div class="chat-con" :style="{ height: chatConHeigth + 'px' }">
         <img :src="icon" alt="voice" class="voice-icon" @click="changeIcon">
         <textarea class="input" v-if="icon === '/voice.svg'" v-model="input"
-            :style="{ width: textareaWidth, height: textAreaHeight + 'px' }" ref="textArea"></textarea>
+            :style="{ width: textareaWidth, height: textAreaHeight + 'px' }" ref="textArea"
+            @keyup.enter="sendMsg"></textarea>
         <div class="talk-btn" v-else>Hold to Talk</div>
         <div class="chat-right">
             <img src="/face.svg" alt="voice" class="face-icon">
@@ -60,7 +61,7 @@ export default {
             return scrollHeight;
         },
         sendMsg() {
-            PubSub.publish('updateMsg', { message: this.input, role: 'user' });
+            PubSub.publish('updateMsg', { content: this.input, role: 'user' });
             this.input = "";
         }
     }
