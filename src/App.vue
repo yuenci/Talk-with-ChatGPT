@@ -6,6 +6,7 @@
       <div ref="buttom"></div>
     </div>
     <Chat class="chat" />
+    <Modal />
   </div>
 </template>
 
@@ -13,12 +14,13 @@
 import Title from './components/Title.vue';
 import Chat from './components/Chat.vue';
 import Message from './components/Message.vue';
+import Modal from './components/Modal.vue';
 import PubSub from 'pubsub-js';
 import { chatWithGPT } from "./tools.js";
 export default {
   name: 'App',
   components: {
-    Title, Chat, Message
+    Title, Chat, Message, Modal
   },
   data() {
     return {

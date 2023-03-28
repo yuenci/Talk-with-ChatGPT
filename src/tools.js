@@ -1,4 +1,4 @@
-import configs from "./config.json";
+import configs from "./conf.json";
 
 
 export async function chatWithGPT(data) {
